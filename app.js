@@ -20,7 +20,6 @@ var config = {
     messagingSenderId: "577304670149"
     };
     firebase.initializeApp(config);
-
 app.use(express.static(__dirname + "/public"));
 
 firebase.auth().signInAnonymously().catch(function(error) {
@@ -47,13 +46,15 @@ function Bdrequet(callback) {
 		var urlencodedParser = bodyParser.urlencoded({extended: false});
 		app.post("/register", urlencodedParser, function (request, response) {
 			var Utime = time();
-			var refer = 'Users/' + request.body.token;
+			var refer = 'Users/' + request.body.token;   
+			//console.log(" " + request.body.token);
 		    if(!request.body) return response.sendStatus(400);
 		    firebase.database().ref(refer).push({
 		    "body": request.body.name,
 		    "time": Utime,
 		    "stadia": "-1"
 		    });
+		 
 		  response.send(`${request.body.name}`);
 		});
 	  } else {
@@ -110,10 +111,9 @@ function Request(callback) {
 							Update(function (err) {
 							    if(err) throw err;
 							}, snap.key, Recals.stadia, registrationToken.key);	
-							console.log("Time:   " + time());
-							console.log("TIME:" + Recals.time);
+							//console.log("Time:   " + time());
+							//console.log("TIME:" + Recals.time);
 							// переход на новую стади.
-							
 						}
 						catch(err) {
 							console.log('Error  ' + err);
@@ -133,8 +133,7 @@ Request(function (err) {
 }, 60000);
 
 
-// начинаем прослушивать подключения на 3000 порту
-app.listen(3000);
+app.listen(8080);
 
 // отправка сообщения ассинхронно
 function MessageAsy(callback, registrationToken, id){
@@ -143,7 +142,7 @@ function MessageAsy(callback, registrationToken, id){
 	ref.once('value')
 	.then(function (snap) {
 		let call = new Recal(snap.val());
-		call.SendRecal();
+		call.SendRecal(registrationToken);
 		//sends(snap.val());
 	});
 	callback();
