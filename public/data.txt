@@ -1,0 +1,131 @@
+// извлечь объект сообщения
+var messaging = firebase.messaging();
+if (Notification.permission === 'granted') {
+    getToken();
+} 
+
+function getToken() {
+    // запрос на отправку
+    messaging.requestPermission()
+        .then(function() {
+            // Get Instance ID token. Initially this makes a network call, once retrieved
+            // subsequent calls to getToken will return from cache.
+            messaging.getToken()
+                .then(function(currentToken) {
+                    if (currentToken) {
+                        //??
+                        GcurrentToken = currentToken;
+                        console.log(currentToken);
+                        sendTokenToServer(currentToken);
+                    } else {
+                        // Выводит сообщение об ошибке.
+                        showError('No Instance ID token available. Request permission to generate one.');
+                        updateUIForPushPermissionRequired();
+                        setTokenSentToServer(false);
+                    }
+                })
+                .catch(function(error) {
+                    // Выводит сообщение об ошибке.
+                    showError('An error occurred while retrieving token.', error);
+                    //??
+                    setTokenSentToServer(false);
+                });
+        })
+        .catch(function(error) {
+            // Выводит сообщение об ошибке.
+            showError('Unable to get permission to notify.', error);
+        });
+}
+
+function sendTokenToServer(currentToken) {
+    if (!isTokenSentToServer(currentToken)) {
+        // отправлен токен на сервер
+        console.log('Sending token to server...');
+        //??
+        setTokenSentToServer(currentToken);
+    } else {
+        console.log('Token already sent to server so won\'t send it again unless it changes');
+    }
+}
+
+function setTokenSentToServer(currentToken) {
+    if (currentToken) {
+        // установить значение из локального хранилища
+        window.localStorage.setItem('sentFirebaseMessagingToken', currentToken);
+    } else {
+        // удалить значение локального хранилища
+        window.localStorage.removeItem('sentFirebaseMessagingToken');
+    }
+}
+
+function isTokenSentToServer(currentToken) {
+    // получить значение из локального хранилища
+    return window.localStorage.getItem('sentFirebaseMessagingToken') == currentToken;
+}
+
+function showError(error, error_data) {
+    // 
+    if (typeof error_data !== "undefined") {
+        console.error(error + ' ', error_data);
+    } else {
+        console.error(error);
+    }
+
+    alert.show();
+    alert_message.html(error);
+}
+
+sendNotification();
+messaging.onMessage(function(payload) {
+    console.log('onMessage:', payload);
+});
+
+
+
+// функция отправки нотификации
+function sendNotification() {
+    // ключ
+    var apikey = 'AAAAhmoKL8U:APA91bHIcGtWyugGJfqAsgsi20I0AurqZTnO7k7WGO10BteIWV1kKL4kfY4IJuU9qWnh4NxT1hKcQT_2kz5dq8Wd1KoEstd1l-6dpsNMS5YiKi1yF8zDfL8tBZH8sa942rUOKBugXo22';
+
+    // получить токен
+    messaging.getToken()
+        .then(function(currentToken) {
+            // фетч (url, method – метод запроса,
+            // headers – заголовки запроса (объект), 
+            // body – тело запроса: FormData, Blob, строка и т.п.
+            // mode – одно из: «same-origin», «no-cors», «cors», указывает, в каком режиме кросс-доменности предполагается делать запрос.
+            // credentials – одно из: «omit», «same-origin», «include», указывает, пересылать ли куки и заголовки авторизации вместе с запросом.
+            // cache – одно из «default», «no-store», «reload», «no-cache», «force-cache», «only-if-cached», указывает, как кешировать запрос
+            // redirect – можно поставить «follow» для обычного поведения при коде 30x (следовать редиректу) или «error» для интерпретации редиректа как ошибки.)
+            fetch('https://fcm.googleapis.com/fcm/send', {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': 'key=' + apikey,
+                    'Content-Type': 'application/json'
+                },
+                'body': JSON.stringify({
+                    'notification': {"title": "Portugal vs. Denmark","body": "5 to 1","icon": "favicon.png"},
+                    'to': currentToken
+                })
+                // вернуть ответ в формате json
+            }).then(function(response) {
+                return response.json();
+                // вывести ответ в формате json
+            }).then(function(json) {
+                console.log('Response', json);
+
+                if (json.success == 1) {
+                    console.log("god");
+                } else {
+                }
+            }).catch(function(error) {
+                // отобраззить ошибку
+                showError(error);
+            });
+        })
+        .catch(function(error) {
+             // отобраззить ошибку
+            showError('Error retrieving Instance ID token.', error);
+        });
+}
+

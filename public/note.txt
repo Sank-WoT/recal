@@ -1,0 +1,20 @@
+POST /fcm/send HTTP/1.1
+ Host: fcm.googleapis.com
+ Authorization: key=AIzaSyDDBrpA8SziMN8KECgpIk816a1qRNwfgnw
+ Content-Type: application/json
+
+ {
+   "notification": {
+     "title": "Portugal vs. Denmark",
+     "body": "5 to 1",
+     "icon": "firebase-logo.png",
+     "click_action": "http://localhost:3001"
+   },
+   "to": "c8kb003Kfq0:APA91bHHxD9t6xuIhys0FFK2D3CAZKZZwk7y8V3P-a8lTxo5sH4KyOGHzTeQDzlw6wkNN3ZQQ1eDFs58oKbnxJ3GvFuF0q4O2ScLVwAhHjUo5P7QwoiNkbnh0yONg2Q_1HGQGRtuNI_C"
+ }
+
+curl -X POST -H "Authorization: key=AAAAhmoKL8U:APA91bHIcGtWyugGJfqAsgsi20I0AurqZTnO7k7WGO10BteIWV1kKL4kfY4IJuU9qWnh4NxT1hKcQT_2kz5dq8Wd1KoEstd1l-6dpsNMS5YiKi1yF8zDfL8tBZH8sa942rUOKBugXo22" -H "Content-Type: application/json" -d "{"notification": {"title": "Portugal vs. Denmark","body": "5 to 1","icon": "firebase-logo.png","click_action": "http://localhost:3000" }, "to": "c8kb003Kfq0:APA91bHHxD9t6xuIhys0FFK2D3CAZKZZwk7y8V3P-a8lTxo5sH4KyOGHzTeQDzlw6wkNN3ZQQ1eDFs58oKbnxJ3GvFuF0q4O2ScLVwAhHjUo5P7QwoiNkbnh0yONg2Q_1HGQGRtuNI_C"}" "https://fcm.googleapis.com/fcm/send"
+
+curl -X POST -H "Authorization: key=AAAAhmoKL8U:APA91bHIcGtWyugGJfqAsgsi20I0AurqZTnO7k7WGO10BteIWV1kKL4kfY4IJuU9qWnh4NxT1hKcQT_2kz5dq8Wd1KoEstd1l-6dpsNMS5YiKi1yF8zDfL8tBZH8sa942rUOKBugXo22" -H "Content-Type:application/json" -d "{"notification": {"title": "Portugal", "body": "5 to 1","click_action": "http://localhost:3000"}, "to": "c8kb003Kfq0:APA91bHHxD9t6xuIhys0FFK2D3CAZKZZwk7y8V3P-a8lTxo5sH4KyOGHzTeQDzlw6wkNN3ZQQ1eDFs58oKbnxJ3GvFuF0q4O2ScLVwAhHjUo5P7QwoiNkbnh0yONg2Q_1HGQGRtuNI_C"}" "https://fcm.googleapis.com/fcm/send"
+
+curl -X POST -u "CONVERSATION_USERNAME":"CONVERSATION_PASSWORD" -H "Content-Type:application/json" -d "{\"input\": {\"text\":\" \"}}" "https://gateway.watsonplatform.net/conversation/api/v1/workspaces/CONVERSATION_ID/message?version=2016-07-11
