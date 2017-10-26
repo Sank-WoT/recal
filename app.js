@@ -21,6 +21,7 @@ var config = {
     };
     firebase.initializeApp(config);
 app.use(express.static(__dirname + "/public"));
+process.env.NODE_ENV = 'production';
 
 firebase.auth().signInAnonymously().catch(function(error) {
   // Handle Errors here.
