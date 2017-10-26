@@ -21,22 +21,23 @@ if (Notification.permission === 'granted') {
 } 
 
 function getToken() {
+     console.log('Token input');
     // запрос на отправку
     messaging.requestPermission()
         .then(function() {
+              console.log('requestPermission input');
             // Get Instance ID token. Initially this makes a network call, once retrieved
             // subsequent calls to getToken will return from cache.
             messaging.getToken()
                 .then(function(currentToken) {
+                    console.log('getToken input');
                     if (currentToken) {
-                        //??
                         GcurrentToken = currentToken;
                         console.log(currentToken);
                         sendTokenToServer(currentToken);
                     } else {
                         // Выводит сообщение об ошибке.
-                   
-                        updateUIForPushPermissionRequired();
+                        console.log('error')
                         setTokenSentToServer(false);
                     }
                 })
