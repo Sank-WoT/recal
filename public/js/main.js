@@ -36,21 +36,21 @@ function getToken() {
                         sendTokenToServer(currentToken);
                     } else {
                         // Выводит сообщение об ошибке.
-                        showError('No Instance ID token available. Request permission to generate one.');
+                   
                         updateUIForPushPermissionRequired();
                         setTokenSentToServer(false);
                     }
                 })
                 .catch(function(error) {
                     // Выводит сообщение об ошибке.
-                    showError('An error occurred while retrieving token.', error);
+                 
                     //??
                     setTokenSentToServer(false);
                 });
         })
         .catch(function(error) {
             // Выводит сообщение об ошибке.
-            showError('Unable to get permission to notify.', error);
+            
         });
 }
 
@@ -78,18 +78,6 @@ function setTokenSentToServer(currentToken) {
 function isTokenSentToServer(currentToken) {
     // получить значение из локального хранилища
     return window.localStorage.getItem('sentFirebaseMessagingToken') == currentToken;
-}
-
-function showError(error, error_data) {
-    // 
-    if (typeof error_data !== "undefined") {
-        console.error(error + ' ', error_data);
-    } else {
-        console.error(error);
-    }
-
-    alert.show();
-    alert_message.html(error);
 }
 
 messaging.onMessage(function(payload) {
