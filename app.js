@@ -55,7 +55,6 @@ function Bdrequet(callback) {
 		    "time": Utime,
 		    "stadia": "-1"
 		    });
-		 
 		  response.send(`${request.body.name}`);
 		});
 	  } else {
@@ -98,7 +97,6 @@ function Request(callback) {
 				user.once('value').then(userSnap => {
 					// получить сообщение 
 					Recals = userSnap.val();
-					console.log("Key: " + registrationToken.key + "  " + Recals.time + '   id:' + snap.key + " stadia:" + Recals.stadia);
 					if(Recals.time < time()) {
 						try {
 							// ассинхронная отправка

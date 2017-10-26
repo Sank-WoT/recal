@@ -116,6 +116,7 @@ $(function(){
              alert( "Data Saved: " + msg );
            }
         });
+        console.log(GcurrentToken);
         $('#name').val('');
     });
 });
