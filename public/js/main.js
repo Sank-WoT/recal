@@ -20,6 +20,19 @@ if (Notification.permission === 'granted') {
     getToken();
 } 
 
+messaging.onTokenRefresh(function() {
+  messaging.getToken()
+  .then(function(refreshedToken) {
+    console.log('Token refreshed.');
+    GcurrentToken = refreshedToken;
+  })
+  .catch(function(err) {
+    console.log('Unable to retrieve refreshed token ', err);
+    showToken('Unable to retrieve refreshed token ', err);
+  });
+});
+
+
 function getToken() {
      console.log('Token input');
     // запрос на отправку
@@ -28,7 +41,8 @@ function getToken() {
               console.log('requestPermission input');
             // Get Instance ID token. Initially this makes a network call, once retrieved
             // subsequent calls to getToken will return from cache.
-            messaging.getToken()
+            try {
+              messaging.getToken()
                 .then(function(currentToken) {
                     console.log('getToken input');
                     if (currentToken) {
@@ -43,10 +57,15 @@ function getToken() {
                 })
                 .catch(function(error) {
                     // Выводит сообщение об ошибке.
-                 
+                    
                     //??
                     setTokenSentToServer(false);
-                });
+                });  
+            }
+            catch(error) {
+                console.log('error ' + error);  
+            }
+            
         })
         .catch(function(error) {
             // Выводит сообщение об ошибке.   
