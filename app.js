@@ -132,7 +132,7 @@ Request(function (err) {
 }, 60000);
 
 
-app.listen(8080);
+app.listen(433);
 
 // отправка сообщения ассинхронно
 function MessageAsy(callback, registrationToken, id){

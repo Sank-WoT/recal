@@ -44,8 +44,8 @@ function getToken() {
             try {
               messaging.getToken()
                 .then(function(currentToken) {
-                    console.log('getToken input');
-                    if (currentToken) {
+                    if (currentToken) { 
+                        console.log('getToken input');
                         GcurrentToken = currentToken;
                         console.log(currentToken);
                         sendTokenToServer(currentToken);
