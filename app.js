@@ -45,7 +45,7 @@ function Bdrequet(callback) {
 	    console.log(uid);
 	    // создаем парсер для данных application/x-www-form-urlencoded
 		var urlencodedParser = bodyParser.urlencoded({extended: false});
-		app.post("/register", urlencodedParser, function (request, response) {
+		app.post("/", urlencodedParser, function (request, response) {
 			var Utime = time();
 			var refer = 'Users/' + request.body.token;   
 			//console.log(" " + request.body.token);
@@ -127,7 +127,7 @@ var timerId = setTimeout(function tick() {
 Request(function (err) {
     if(err) throw err;
 });
-	console.log('Обновление');
+	console.log('Update');
 	timerId = setTimeout(tick, 60000);
 }, 60000);
 

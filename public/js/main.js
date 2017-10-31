@@ -57,7 +57,7 @@ function getToken() {
                 })
                 .catch(function(error) {
                     // Выводит сообщение об ошибке.
-                    
+                    console.log(error);
                     //??
                     setTokenSentToServer(false);
                 });  
@@ -116,7 +116,7 @@ $(function(){
         console.log(m_data);
         $.ajax({
            type: 'POST',
-           url: '/register',
+           url: '/',
            data: {name: m_data,token: GcurrentToken},
            success: function(msg){
              alert( "Data Saved: " + msg );
