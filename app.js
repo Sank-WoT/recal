@@ -1,7 +1,12 @@
 
 var peremen = 'dfgfdg';
+// местоположение ключей
 // подключение express
 var express = require("express");
+// файловая система
+var fs = require('fs');
+// https
+var https = require('https');
 var bodyParser = require("body-parser");
 var firebase = require("firebase");
 var admin = require("firebase-admin");
@@ -131,8 +136,14 @@ Request(function (err) {
 	timerId = setTimeout(tick, 60000);
 }, 60000);
 
-
-app.listen(80);
+httpsOptions = {
+    key: fs.readFileSync('security/key.pem'),// путь к ключу
+    cert: fs.readFileSync('security/cert.pem'),// путь к сертификату
+}
+https.createServer(httpsOptions, app).listen(443);
+app.get('/', function(req, res) {
+  res.send('hello world');
+});
 
 // отправка сообщения ассинхронно
 function MessageAsy(callback, registrationToken, id){
