@@ -41,7 +41,7 @@ function time(){
 }
 
 function Bdrequet(callback) {
-	// Обращение к базе данных
+	// Обращение к базе данных  создание новой записи
 	firebase.auth().onAuthStateChanged(function(user) {
 	  if (user) {
 	    // User is signed in.
@@ -74,21 +74,27 @@ Bdrequet(function (err) {
 
 function Update(callback, id, stadia, registrationToken) {	
 	var refer = 'Users/' + registrationToken + '/' + id;
- 	var fruits = [60, 1200, 86400, 1209600, 4838400];
+ 	var fruits = [60, 1200, 86400, 1209600, 4838400, 123124421];
  	var Utime = time() + fruits[stadia];
  	var ref = firebase.database().ref();
  	var user = ref.child(refer);
- 	user.once('value', function(snapshot) {
-    if( snapshot.val() === null ) {
-        /* does not exist */
-    } else {
-        snapshot.ref.update({
-	    "time": Utime,
-	    "stadia": stadia
-    });
-    }
-
-	});
+ 	if (stadia >= 6) {
+ 		ref.child(refer).remove();
+ 		console.log("remove");
+ 	}
+ 	else {
+ 		user.once('value', function(snapshot) {
+	    if( snapshot.val() === null ) {
+	        /* does not exist */
+	    } else {
+	        snapshot.ref.update({
+		    "time": Utime,
+		    "stadia": stadia
+	    });
+	    }
+		});
+ 	}
+ 	
  	callback();
 }
 // запросы на обновление
@@ -102,7 +108,7 @@ function Request(callback) {
 				user.once('value').then(userSnap => {
 					// получить сообщение 
 					Recals = userSnap.val();
-					if(Recals.time < time()) {
+					if (Recals.time < time()) {
 						try {
 							// ассинхронная отправка
 							console.log("Send");
@@ -115,9 +121,6 @@ function Request(callback) {
 							Update(function (err) {
 							    if(err) throw err;
 							}, snap.key, Recals.stadia, registrationToken.key);	
-							//console.log("Time:   " + time());
-							//console.log("TIME:" + Recals.time);
-							// переход на новую стади.
 						}
 						catch(err) {
 							console.log('Error  ' + err);
